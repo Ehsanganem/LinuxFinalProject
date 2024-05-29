@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# Check for the existence of the CSV file
+# here i check for the csv file
 CSV_FILE="tasks.csv"
 if [ ! -f "$CSV_FILE" ]; then
     echo "CSV file not found!"
     exit 1
 fi
 
-# Read parameters
+
 DEV_DESCRIPTION="$1"
 
-# Get current branch name
+# here i get the current branch name
 BRANCH_NAME=$(git branch --show-current)
 echo "Current branch: $BRANCH_NAME"
 
@@ -18,7 +18,8 @@ echo "Current branch: $BRANCH_NAME"
 while IFS=, read -r BugID DateTime BranchName DevName Priority Description; do
     echo "Reading line: $BugID, $DateTime, $BranchName, $DevName, $Priority, $Description"
     if [ "$BranchName" == "$BRANCH_NAME" ]; then
-        COMMIT_MSG="BugID:$BugID:$(date +%Y-%m-%d_%H-%M-%S):$BranchName:$DevName:$Priority:$Description"
+        CURRENT_DATE_TIME=$(date +%Y-%m-%d_%H-%M-%S)
+        COMMIT_MSG="BugID:$BugID:$CURRENT_DATE_TIME:$BranchName:$DevName:$Priority:$Description"
         if [ -n "$DEV_DESCRIPTION" ]; then
             COMMIT_MSG="$COMMIT_MSG:$DEV_DESCRIPTION"
         fi
